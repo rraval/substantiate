@@ -1,0 +1,19 @@
+[[paths]]
+target = "/home/rraval/git-nomad"
+command = "./substantiate-git-clone"
+tags = ["git-nomad"]
+[paths.env]
+CLONE_URL = "git@github.com:rraval/git-nomad.git"
+
+[[paths]]
+target = "/home/rraval/pass"
+command = "./substantiate-git-clone"
+[paths.env]
+CLONE_URL = "git@github.com:rraval/pass.git"
+
+[[paths]]
+target = "/home/rraval/zeroindexed"
+command = "./substantiate-git-clone"
+tags = ["git-nomad"]
+[paths.env]
+CLONE_URL = "git@github.com:rraval/zeroindexed.git"
