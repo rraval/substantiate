@@ -4,11 +4,13 @@ use std::{collections::HashMap, fs::read_to_string, path::Path};
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 struct Config {
     paths: Vec<ConfigPath>,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 struct ConfigPath {
     target: String,
     #[serde(default="default_target_env_var")]
