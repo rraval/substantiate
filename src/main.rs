@@ -13,10 +13,10 @@ struct Config {
 #[serde(deny_unknown_fields)]
 struct ConfigPath {
     target: String,
-    #[serde(default="default_target_env_var")]
+    #[serde(default = "default_target_env_var")]
     target_env_var: String,
     command: String,
-    #[serde(default="default_tags")]
+    #[serde(default = "default_tags")]
     tags: Vec<String>,
     env: HashMap<String, String>,
 }
