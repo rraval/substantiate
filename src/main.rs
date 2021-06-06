@@ -1,38 +1,36 @@
 use anyhow::Result;
-use std::{collections::HashMap, fs::read_to_string, path::Path};
+use clap::{crate_authors, crate_description, crate_name, crate_version, App, Arg, SubCommand};
 
-use serde::Deserialize;
+use crate::config::ConfigFinder;
 
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-struct Config {
-    paths: Vec<ConfigPath>,
-}
-
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-struct ConfigPath {
-    target: String,
-    #[serde(default = "default_target_env_var")]
-    target_env_var: String,
-    command: String,
-    #[serde(default = "default_tags")]
-    tags: Vec<String>,
-    env: HashMap<String, String>,
-}
-
-fn default_target_env_var() -> String {
-    "SUBSTANTIATE_TARGET".to_string()
-}
-
-fn default_tags() -> Vec<String> {
-    Vec::new()
-}
+mod config;
+mod default;
 
 fn main() -> Result<()> {
-    let path = Path::new("config.toml");
-    let contents = read_to_string(path)?;
-    let config: Config = toml::from_str(&contents)?;
-    println!("{:?}", config);
+    let matches = App::new(crate_name!())
+        .name(crate_name!())
+        .version(crate_version!())
+        .author(crate_authors!())
+        .about(crate_description!())
+        .arg(
+            Arg::with_name("config")
+                .long("config")
+                .takes_value(true)
+                .help("Path to configuration file"),
+        )
+        .subcommand(SubCommand::with_name("show").about("Print the parsed configuration file"))
+        .get_matches();
+
+    let config_finder = matches
+        .value_of("config")
+        .map(|config| ConfigFinder::Explicit(config.to_string()))
+        .unwrap_or(ConfigFinder::Implicit);
+
+    if matches.subcommand_matches("show").is_some() {
+        let path = config_finder.path(crate_name!())?;
+        let config = config_finder.read(path)?;
+        println!("{:#?}", config);
+    }
+
     Ok(())
 }
