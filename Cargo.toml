@@ -3,5 +3,8 @@ name = "substantiate"
 version = "0.1.0"
 authors = ["Ronuk Raval <ronuk.raval@gmail.com>"]
 edition = "2018"
+description = "Declaratively manage paths and run commands in them"
+repository = "https://github.com/rraval/substantiate"
+license = "MIT"
 
 [dependencies]
