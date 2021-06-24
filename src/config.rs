@@ -35,12 +35,12 @@ impl ConfigFinder {
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
 pub struct Config {
-    pub paths: Vec<ConfigPath>,
+    pub paths: Vec<ConceptualPath>,
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
-pub struct ConfigPath {
+pub struct ConceptualPath {
     pub target: String,
     #[serde(default = "default_target_env_var")]
     pub target_env_var: Cow<'static, str>,
