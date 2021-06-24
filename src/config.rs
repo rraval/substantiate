@@ -11,11 +11,9 @@ pub enum ConfigFinder {
 }
 
 impl ConfigFinder {
-    pub fn path(&self, app_name: &str) -> Result<Cow<Path>> {
+    pub fn path(&self, project_dirs: &ProjectDirs) -> Result<Cow<Path>> {
         match self {
             Self::Implicit => {
-                let project_dirs =
-                    ProjectDirs::from("", "", app_name).context("Resolving project directories")?;
                 let mut config_dir = project_dirs.config_dir().to_path_buf();
                 config_dir.push(default::CONFIG_FILE_NAME);
                 Ok(Cow::from(config_dir))

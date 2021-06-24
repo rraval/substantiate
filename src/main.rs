@@ -2,11 +2,13 @@ use std::env::set_current_dir;
 
 use anyhow::{Context, Result};
 use clap::{crate_authors, crate_description, crate_name, crate_version, App, Arg, SubCommand};
+use directories::ProjectDirs;
 
 use crate::{config::ConfigFinder, tangible::TangiblePath};
 
 mod config;
 mod default;
+mod permanence;
 mod tangible;
 
 fn main() -> Result<()> {
@@ -32,7 +34,9 @@ fn main() -> Result<()> {
         .map(|config| ConfigFinder::Explicit(config.to_string()))
         .unwrap_or(ConfigFinder::Implicit);
 
-    let path = config_finder.path(crate_name!())?;
+    let project_dirs =
+        ProjectDirs::from("", "", crate_name!()).context("Resolving project directories")?;
+    let path = config_finder.path(&project_dirs)?;
     let config = config_finder.read(&path)?;
     set_current_dir(path.parent().context("Config file parent")?)?;
 
