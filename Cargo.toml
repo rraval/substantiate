@@ -9,7 +9,11 @@ license = "MIT"
 
 [dependencies]
 anyhow = "^1.0.41"
-directories = "^3.0.2"
 clap = "^2.33.3"
+data-encoding = "^2.3.2"
+directories = "^3.0.2"
+os_str_bytes = "^3.1.0"
 serde = { version = "^1.0.126", features = ["derive"] }
+sha2 = "^0.9.5"
+symlink = "^0.1.0"
 toml = "^0.5.8"

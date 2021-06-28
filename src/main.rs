@@ -4,7 +4,7 @@ use anyhow::{Context, Result};
 use clap::{crate_authors, crate_description, crate_name, crate_version, App, Arg, SubCommand};
 use directories::ProjectDirs;
 
-use crate::{config::ConfigFinder, tangible::TangiblePath};
+use crate::{config::ConfigFinder, permanence::SymlinkPermanence, tangible::TangiblePath};
 
 mod config;
 mod default;
@@ -46,10 +46,11 @@ fn main() -> Result<()> {
     }
 
     if matches.subcommand_matches("up").is_some() {
+        let permanence = SymlinkPermanence::new(&project_dirs);
         config
             .paths
             .iter()
-            .try_for_each(|p| TangiblePath::up(p).map(|_| ()))?;
+            .try_for_each(|p| TangiblePath::up(&permanence, p).map(|_| ()))?;
     }
 
     Ok(())
